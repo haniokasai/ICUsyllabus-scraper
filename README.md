@@ -1,0 +1,2 @@
+# ICUsyllabus-scraper
+ICUのシラバスをスクレイピングできます
