@@ -1,7 +1,7 @@
 # ICUsyllabus-scraper
 ICUのシラバスをスクレイピングできます
 
-#　要求するなにか
+# 要求するなにか
 
 ## chromedriver
 実行ディレクトリにhttps://sites.google.com/a/chromium.org/chromedriver/ を設置してください。
