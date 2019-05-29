@@ -18,8 +18,11 @@ CONFIG_FILE = "settings.ini"
 
 ##conf
 year = "2019"
-tablename = "Spring2019"
-dbfilename = "syllabus2019_t2.db"
+tablename_s = "Spring2019"
+tablename_a = "Autumn2019"
+tablename_w = "Winter2019"
+
+dbfilename = "syllabus2019_sepd.db"
 
 #ini
 conf = configparser.SafeConfigParser()
@@ -32,7 +35,12 @@ passwd = conf.get("conf","passwd")
 ########mk sqlite
 conn = sqlite3.connect(dbfilename)
 c = conn.cursor()
-c.execute("CREATE TABLE "+tablename+"('id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,'rgno' TEXT,'season' TEXT,'csno' TEXT,'lang' TEXT,'etitle' TEXT,'jtitle' TEXT,'schedule' TEXT,'room' TEXT,'instructor' TEXT,'unit' TEXT,'schedule_string' TEXT,'s11' INTEGER,'s12' INTEGER,'s13' INTEGER,'s14' INTEGER,'s15' INTEGER,'s16' INTEGER,'s21' INTEGER,'s22' INTEGER,'s23' INTEGER,'s24' INTEGER,'s25' INTEGER,'s26' INTEGER,'s31' INTEGER,'s32' INTEGER,'s33' INTEGER,'s34' INTEGER,'s35' INTEGER,'s36' INTEGER,'s41' INTEGER,'s42' INTEGER,'s43' INTEGER,'s44' INTEGER,'s45' INTEGER,'s46' INTEGER,'s51' INTEGER,'s52' INTEGER,'s53' INTEGER,'s54' INTEGER,'s55' INTEGER,'s56' INTEGER,'s61' INTEGER,'s62' INTEGER,'s63' INTEGER,'s64' INTEGER,'s65' INTEGER,'s66' INTEGER,'s71' INTEGER,'s72' INTEGER,'s73' INTEGER,'s74' INTEGER,'s75' INTEGER,'s76' INTEGER,'s81' INTEGER,'s82' INTEGER,'s83' INTEGER,'s84' INTEGER,'s85' INTEGER,'s86' INTEGER,'s91' INTEGER,'s92' INTEGER,'s93' INTEGER,'s94' INTEGER,'s95' INTEGER,'s96' INTEGER)")
+def cre8table(tablename):
+    c.execute(
+        "CREATE TABLE " + tablename + "('id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,'rgno' TEXT,'season' TEXT,'csno' TEXT,'lang' TEXT,'etitle' TEXT,'jtitle' TEXT,'schedule' TEXT,'room' TEXT,'instructor' TEXT,'unit' TEXT,'schedule_string' TEXT,'s11' INTEGER,'s12' INTEGER,'s13' INTEGER,'s14' INTEGER,'s15' INTEGER,'s16' INTEGER,'s21' INTEGER,'s22' INTEGER,'s23' INTEGER,'s24' INTEGER,'s25' INTEGER,'s26' INTEGER,'s31' INTEGER,'s32' INTEGER,'s33' INTEGER,'s34' INTEGER,'s35' INTEGER,'s36' INTEGER,'s41' INTEGER,'s42' INTEGER,'s43' INTEGER,'s44' INTEGER,'s45' INTEGER,'s46' INTEGER,'s51' INTEGER,'s52' INTEGER,'s53' INTEGER,'s54' INTEGER,'s55' INTEGER,'s56' INTEGER,'s61' INTEGER,'s62' INTEGER,'s63' INTEGER,'s64' INTEGER,'s65' INTEGER,'s66' INTEGER,'s71' INTEGER,'s72' INTEGER,'s73' INTEGER,'s74' INTEGER,'s75' INTEGER,'s76' INTEGER,'s81' INTEGER,'s82' INTEGER,'s83' INTEGER,'s84' INTEGER,'s85' INTEGER,'s86' INTEGER,'s91' INTEGER,'s92' INTEGER,'s93' INTEGER,'s94' INTEGER,'s95' INTEGER,'s96' INTEGER)")
+cre8table(tablename_a)
+cre8table(tablename_s)
+cre8table(tablename_w)
 conn.commit()
 
 ######
@@ -79,9 +87,6 @@ while (True):
     classtable = driver.find_element_by_id("ctl00_ContentPlaceHolder1_grv_course").find_element_by_tag_name(
         "tbody").find_elements_by_tag_name("tr")
 
-    # sql文
-    execstring = "insert into " + tablename + " (rgno, season, csno, lang, etitle, jtitle, schedule, room, instructor, unit) values (?,?,?,?,?,?,?,?,?,?)"
-    print(execstring)
 
     ii = 0
     for classone in classtable:
@@ -106,7 +111,13 @@ while (True):
         li = (t_rgno, t_season, t_csno, t_lang, t_etitle, t_jtitle,t_schedule, t_room, t_instructor, t_unit)
         print(str(li))
 
-        c.execute(execstring, li)
+        tablename = tablename_s
+        if(t_season is "Winter"):
+            tablename = tablename_w
+        if(t_season is "Autumn"):
+            tablename = tablename_a
+
+        c.execute("insert into " + tablename + " (rgno, season, csno, lang, etitle, jtitle, schedule, room, instructor, unit) values (?,?,?,?,?,?,?,?,?,?)", li)
     conn.commit()
 #ログアウト
 #https://auth.gluegent.net/sso/logout.cgi?logout=true
